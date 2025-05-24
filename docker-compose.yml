@@ -1,0 +1,13 @@
+services:
+  websocket:
+    build: .
+    ports:
+      - "3000:3000"
+    container_name: modular-websocket-server
+    restart: always
+    networks:
+      - microservices_localNetwork
+
+networks:
+  microservices_localNetwork:
+    external: true
