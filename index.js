@@ -33,19 +33,24 @@ io.on("connection", (socket) => {
 
 // ✅ مسیر HTTP برای دریافت پیام از PHP
 app.post("/push", (req, res) => {
-    const { room, action, payload } = req.body;
+    const { room, action, message, payload } = req.body;
 
-    if (!room || !action || !payload) {
+    if (!room || !action) {
         return res.status(400).json({ error: "اطلاعات ناقص است" });
     }
 
-    const message = { room, action, payload };
+    const data = {
+        room,
+        action,
+        message: message ?? null,
+        payload: payload ?? null,
+    };
 
-    console.log("📥 دریافت پیام از PHP:", message);
-    io.to(room).emit("receiveEvent", message);
+    io.to(room).emit("receiveEvent", data);
 
     res.json({ success: true, message: "ارسال شد" });
 });
+
 
 httpServer.listen(3000, () => {
     console.log("🚀 سرور سوکت روی پورت 3000 اجرا شد");
